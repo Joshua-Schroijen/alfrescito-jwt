@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { AuthService } from '../../services/auth.service';
 
@@ -8,10 +9,20 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./register-form.component.scss']
 })
 export class RegisterFormComponent {
+  @ViewChild('registrationForm', { read: NgForm }) form!: NgForm;
+
   public constructor(private authService: AuthService) {
   }
 
   protected onSubmit(inputs: {[key: string]: string}): void {
-    this.authService.register(inputs['email'], inputs['password']);
+    if (! (this.form.controls['password'].value === this.form.controls['repeatPassword'].value)) {
+      this.form.controls['repeatPassword'].setErrors({ invalidCondition: true });
+    }
+
+    console.log("FORM IS VALid", this.form.valid);
+    console.log(this.form);
+    if (this.form.valid) {
+      this.authService.register(inputs['email'], inputs['password']);
+    }
   }
 }
