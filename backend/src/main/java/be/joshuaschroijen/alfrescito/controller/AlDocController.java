@@ -26,7 +26,7 @@ import be.joshuaschroijen.alfrescito.repository.AlDocRepository;
 import be.joshuaschroijen.alfrescito.repository.AlfrescitoUserRepository;
 
 @RestController
-@RequestMapping("/aldocs")
+@RequestMapping("/api/v1")
 public class AlDocController {
     private AlfrescitoUserRepository userRepository;
     private AlDocRepository alDocRepository;
@@ -36,7 +36,7 @@ public class AlDocController {
         this.alDocRepository = alDocRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("/aldocs")
     public ResponseEntity<List<AlDoc>> getAlDocsList() throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -44,13 +44,13 @@ public class AlDocController {
         return ResponseEntity.ok(this.alDocRepository.findByOwner(user));
     }
 
-    @PostMapping("/")
+    @PostMapping("/aldocs")
     public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
         writeFileToDisk(file);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/aldocs/{id}")
     public ResponseEntity<Resource> getFile(@PathVariable Long id) throws IOException {
         Optional<AlDoc> optionalAlDoc = alDocRepository.findById(id);
         if (!optionalAlDoc.isPresent()) {
@@ -77,7 +77,7 @@ public class AlDocController {
                 .body(resource);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/aldocs/{id}")
     public ResponseEntity<Void> deleteAlDoc(@PathVariable Long id) throws Exception {
         this.alDocRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).build();        
