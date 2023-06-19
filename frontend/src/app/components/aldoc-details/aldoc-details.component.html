@@ -1,0 +1,27 @@
+<div *ngIf="currentAlDoc.id; else aldoc_selected">
+  <h4>AlDoc</h4>
+  <button class="badge badge-danger mr-2" (click)="deleteAlDoc()">
+    Delete
+  </button>
+  <div>
+    <label><strong>Filename:</strong></label>
+    {{ currentAlDoc.filePath }}
+ </div>
+  <div>
+    <label><strong>Summary:</strong></label>
+    {{ currentAlDoc.summary }}
+  </div>
+  <div>
+    <label><strong>Named entities:</strong></label>
+    <ul>
+      <li *ngFor="let namedEntity of currentAlDoc.namedEntities">
+        {{ namedEntity.name }}
+      </li>
+    </ul>
+  </div>
+</div>
+
+<ng-template #aldoc_selected>
+  <br />
+  <p>Please click on an AlDoc ...</p>
+</ng-template>

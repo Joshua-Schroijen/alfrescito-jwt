@@ -1,0 +1,22 @@
+<header>
+  <div>
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a href="#" class="navbar-brand">Alfrescito</a>
+      <div class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a routerLink="/aldocs" class="nav-link">AlDocs</a>
+        </li>
+      </div>
+      <div class="text-end">
+        <button type="button" class="btn btn-outline-light me-2" (click)="toLogin()">Login</button>
+        <button type="button" class="btn btn-warning" (click)="toRegister()">Sign-up</button>
+      </div>
+    </nav>
+  </div>
+</header>
+<main role="main">
+  <div class="container mt-3">
+    <router-outlet></router-outlet>
+  </div>
+</main>
+

@@ -77,6 +77,12 @@ public class AlDocController {
                 .body(resource);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAlDoc(@PathVariable Long id) throws Exception {
+        this.alDocRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).build();        
+    }
+
     private void writeFileToDisk(MultipartFile file) throws Exception {
         String uploadDir = "/path/to/uploads";
         Files.createDirectories(Path.of(uploadDir));

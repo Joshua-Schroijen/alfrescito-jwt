@@ -1,7 +1,11 @@
 package be.joshuaschroijen.alfrescito.model;
 
-import jakarta.persistence.*;
 import java.util.List;
+
+import jakarta.persistence.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import be.joshuaschroijen.alfrescito.utils.FilePathSerializer;
 
 @Entity
 public class AlDoc {
@@ -14,6 +18,7 @@ public class AlDoc {
     private AlfrescitoUser owner;
 
     @Column(nullable = false)
+    @JsonSerialize(using = FilePathSerializer.class)
     private String filePath;
 
     @Column(nullable = true)

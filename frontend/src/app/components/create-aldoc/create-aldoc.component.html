@@ -1,0 +1,10 @@
+<div class="submit-form">
+  <form #aldocCreationForm="ngForm" (ngSubmit)="onSubmit(aldocCreationForm.value)">
+    <div class="form-group">
+      <label class="form-label" for="file">File</label>
+      <input type="file" id="file" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>

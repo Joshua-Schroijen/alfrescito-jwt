@@ -1,0 +1,26 @@
+<h1 class="display-4">Register</h1>
+<form #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm.value)">
+  <div class="form-outline mb-4">
+    <label class="form-label" for="email">Email address</label>
+    <input type="text" id="email" class="form-control" required />
+  </div>
+
+  <div class="form-outline mb-4">
+    <label class="form-label" for="password">Password</label>
+    <input type="password" id="password" class="form-control" required />
+  </div>
+
+  <div class="form-outline mb-4">
+    <label class="form-label" for="repeatPassword">Repeat password</label>
+    <input type="password" id="repeatPassword" class="form-control" required />
+  </div>
+
+  <div class="form-check d-flex justify-content-center mb-4">
+    <input class="form-check-input me-2" type="checkbox" value="" id="agreedToTerms" checked />
+    <label class="form-check-label" for="agreedToTerms">
+      I have read and agree to the terms
+    </label>
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-block mb-3">Register</button>
+</form>

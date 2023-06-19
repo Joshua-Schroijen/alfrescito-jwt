@@ -1,6 +1,7 @@
 package be.joshuaschroijen.alfrescito.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import be.joshuaschroijen.alfrescito.components.JwtAuthFilter;
 import be.joshuaschroijen.alfrescito.service.AlfrescitoUserDetailsService;
 
+@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SpringSecurity {
@@ -29,10 +31,10 @@ public class SpringSecurity {
     http
       .csrf((csrf) -> csrf.disable())
       .authorizeHttpRequests((authorize) -> authorize
-        .anyRequest()
-        .authenticated()
         .requestMatchers("/**/auth/**")
         .permitAll()
+        .anyRequest()
+        .authenticated()
       )
       .authenticationProvider(authenticationProvider())
       .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

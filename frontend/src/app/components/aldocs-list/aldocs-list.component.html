@@ -1,0 +1,17 @@
+<div class="list row">
+  <div class="col-md-6">
+    <h4>AlDocs List</h4>
+    <ul class="list-group">
+      <li
+        class="list-group-item"
+        *ngFor="let aldoc of aldocs; let i = index"
+        [class.active]="i == currentIndex"
+        (click)="setActiveAlDoc(aldoc, i)">
+        {{ aldoc.filePath }}
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-6">
+    <aldoc-details [currentAlDoc]="currentAlDoc"></aldoc-details>
+  </div>
+</div>
