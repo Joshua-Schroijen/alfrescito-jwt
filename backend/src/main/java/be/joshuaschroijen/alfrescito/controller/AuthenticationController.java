@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 import be.joshuaschroijen.alfrescito.components.JwtUtils;
 import be.joshuaschroijen.alfrescito.dto.AuthenticationRequest;
+import be.joshuaschroijen.alfrescito.dto.AuthenticationResponse;
 import be.joshuaschroijen.alfrescito.dto.UserRegistrationRequest;
 import be.joshuaschroijen.alfrescito.service.AlfrescitoUserDetailsService;
 
@@ -26,7 +27,7 @@ public class AuthenticationController {
     private final AlfrescitoUserDetailsService userDetailsService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(
+    public ResponseEntity<AuthenticationResponse> authenticate(
         @RequestBody AuthenticationRequest request
     ){
         authenticationManager.authenticate(
@@ -34,9 +35,11 @@ public class AuthenticationController {
         );
         final UserDetails user = userDetailsService.loadUserByUsername(request.getEmail());
         if (user != null) {
-            return ResponseEntity.ok(jwtUtils.generateToken(user));
+            return ResponseEntity.ok(
+                new AuthenticationResponse(jwtUtils.generateToken(user))
+            );
         }
-        return ResponseEntity.internalServerError().body("Some error has occurred");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PostMapping("/register")

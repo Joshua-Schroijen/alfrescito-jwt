@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ignoreElements } from 'rxjs/operators';
 
+import { AuthenticationResponse } from '../models/authentication-response.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -19,11 +20,10 @@ export class AuthService {
       password: password
     };
 
-    let loginProcess: Observable<string> = this.http.post<string>(`${environment.apiUrl}/authenticate`, credentials);
+    let loginProcess: Observable<AuthenticationResponse> = this.http.post<AuthenticationResponse>(`${environment.apiUrl}/auth/authenticate`, credentials);
     loginProcess.subscribe({
-      next: (response: string) => {
-        this.jwtToken = response;
-        console.log('Authentication successful:', response);
+      next: (response: AuthenticationResponse) => {
+        this.jwtToken = response.jwtToken;
       },
       error: (error) => {
         console.error('Authentication failed:', error);
@@ -38,7 +38,9 @@ export class AuthService {
       password: password
     };
 
-    let registrationProcess: Observable<string> = this.http.post<string>(`${environment.apiUrl}/authenticate`, userData);
+    const headers = new HttpHeaders();
+  
+    let registrationProcess: Observable<string> = this.http.post<string>(`${environment.apiUrl}/auth/register`, userData, { headers });
     registrationProcess.subscribe({
       error: (error) => {
         console.error('Authentication failed:', error);

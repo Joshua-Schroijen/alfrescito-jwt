@@ -14,12 +14,12 @@ export class AldocsService {
 
   public getAll(): Observable<AlDoc[]> {
     const headers = this.authService.addAuthorizationHeaders(new HttpHeaders());
-    return this.http.get<AlDoc[]>(environment.apiUrl, { headers });
+    return this.http.get<AlDoc[]>(`${environment.apiUrl}/aldocs`, { headers });
   }
 
   public get(id: string): Observable<AlDoc> {
     const headers = this.authService.addAuthorizationHeaders(new HttpHeaders());
-    return this.http.get<AlDoc>(`${environment.apiUrl}/${id}`, { headers });
+    return this.http.get<AlDoc>(`${environment.apiUrl}/aldocs/${id}`, { headers });
   }
 
   public create(file: File): Observable<Object> {
@@ -30,7 +30,7 @@ export class AldocsService {
     headers.append('Content-Type', 'multipart/form-data');
     headers = this.authService.addAuthorizationHeaders(headers);
   
-    let creationProcess: Observable<Object> = this.http.post(environment.apiUrl, formData, { headers });
+    let creationProcess: Observable<Object> = this.http.post(`${environment.apiUrl}/aldocs`, formData, { headers });
     creationProcess.subscribe({
       error: (error) => {
         console.error('AlDoc creation failed:', error);
@@ -42,12 +42,17 @@ export class AldocsService {
   public delete(id: string): Observable<Object> {
     const headers = this.authService.addAuthorizationHeaders(new HttpHeaders());
 
-    let removalProcess: Observable<Object> = this.http.delete(`${environment.apiUrl}/${id}`, { headers });
+    let removalProcess: Observable<Object> = this.http.delete(`${environment.apiUrl}/aldocs/${id}`, { headers });
     removalProcess.subscribe({
       error: (error) => {
         console.error('AlDoc removal failed:', error);
       }
     });
     return removalProcess.pipe(ignoreElements());
+  }
+
+  public download(id: string): Observable<any> {
+    const headers = this.authService.addAuthorizationHeaders(new HttpHeaders());
+    return this.http.get<AlDoc>(`${environment.apiUrl}/files/${id}`, { headers });
   }
 }

@@ -30,8 +30,7 @@ public class AlDoc {
     protected AlDoc() {
     }
 
-    public AlDoc(Long id, String filePath, String summary, List<NamedEntity> namedEntities) {
-        this.id = id;
+    public AlDoc(String filePath, String summary, List<NamedEntity> namedEntities) {
         this.filePath = filePath;
         this.summary = summary;
         this.namedEntities = namedEntities;

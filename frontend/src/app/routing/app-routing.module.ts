@@ -12,9 +12,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'aldocs', pathMatch: 'full' },
   { path: 'login', component: LoginFormComponent },
   { path: 'register', component: RegisterFormComponent },
-  { path: 'aldocs', component: AldocsListComponent, canActivate: [AuthGuard]  },
-  { path: 'aldocs/:id', component: AldocDetailsComponent, canActivate: [AuthGuard]  },
-  { path: 'add', component: CreateAldocComponent, canActivate: [AuthGuard]  },
+  { path: 'aldocs', component: AldocsListComponent, canActivate: [AuthGuard] },
+  { path: 'aldocs/:id', component: AldocDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'add', component: CreateAldocComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

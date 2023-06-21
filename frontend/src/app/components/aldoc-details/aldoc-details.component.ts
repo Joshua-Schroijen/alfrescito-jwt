@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 import { AlDoc, emptyAlDoc } from '../../models/aldoc.model';
 import { AldocsService } from '../../services/aldocs.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'aldoc-details',
@@ -41,5 +43,9 @@ export class AldocDetailsComponent implements OnInit {
         },
         error: (e) => console.error(e)
       });
+  }
+
+  download(){
+    this.aldocsService.download(this.currentAlDoc.id);
   }
 }

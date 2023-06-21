@@ -19,8 +19,6 @@ export class RegisterFormComponent {
       this.form.controls['repeatPassword'].setErrors({ invalidCondition: true });
     }
 
-    console.log("FORM IS VALid", this.form.valid);
-    console.log(this.form);
     if (this.form.valid) {
       this.authService.register(inputs['email'], inputs['password']);
     }

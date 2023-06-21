@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.core.io.FileSystemResource;
@@ -22,11 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import be.joshuaschroijen.alfrescito.model.AlDoc;
 import be.joshuaschroijen.alfrescito.model.AlfrescitoUser;
+import be.joshuaschroijen.alfrescito.model.NamedEntity;
 import be.joshuaschroijen.alfrescito.repository.AlDocRepository;
 import be.joshuaschroijen.alfrescito.repository.AlfrescitoUserRepository;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/aldocs")
 public class AlDocController {
     private AlfrescitoUserRepository userRepository;
     private AlDocRepository alDocRepository;
@@ -45,12 +47,23 @@ public class AlDocController {
     }
 
     @PostMapping("/aldocs")
-    public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
-        writeFileToDisk(file);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<AlDoc> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
+        String fileName = writeFileToDisk(file);
+        AlDoc newAlDoc = new AlDoc(fileName, "", new ArrayList<NamedEntity>());
+        this.alDocRepository.save(newAlDoc);
+        return ResponseEntity.ok(newAlDoc);
     }
 
     @GetMapping("/aldocs/{id}")
+    public ResponseEntity<AlDoc> getAlDoc(@PathVariable Long id) throws Exception {
+        Optional<AlDoc> optionalAlDoc = alDocRepository.findById(id);
+        if (!optionalAlDoc.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(optionalAlDoc.get());
+    }
+
+    @GetMapping("/files/{id}")
     public ResponseEntity<Resource> getFile(@PathVariable Long id) throws IOException {
         Optional<AlDoc> optionalAlDoc = alDocRepository.findById(id);
         if (!optionalAlDoc.isPresent()) {
@@ -83,7 +96,7 @@ public class AlDocController {
         return ResponseEntity.status(HttpStatus.OK).build();        
     }
 
-    private void writeFileToDisk(MultipartFile file) throws Exception {
+    private String writeFileToDisk(MultipartFile file) throws Exception {
         String uploadDir = "/path/to/uploads";
         Files.createDirectories(Path.of(uploadDir));
 
@@ -91,5 +104,7 @@ public class AlDocController {
         Path filePath = Path.of(uploadDir, fileName);
 
         Files.write(filePath, file.getBytes(), StandardOpenOption.WRITE);
+
+        return fileName;
     }
 }
