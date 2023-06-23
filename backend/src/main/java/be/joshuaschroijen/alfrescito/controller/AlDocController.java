@@ -28,7 +28,7 @@ import be.joshuaschroijen.alfrescito.repository.AlDocRepository;
 import be.joshuaschroijen.alfrescito.repository.AlfrescitoUserRepository;
 
 @RestController
-@RequestMapping("/api/v1/aldocs")
+@RequestMapping("/api/v1")
 public class AlDocController {
     private AlfrescitoUserRepository userRepository;
     private AlDocRepository alDocRepository;
@@ -43,7 +43,8 @@ public class AlDocController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         AlfrescitoUser user = userRepository.findOneByUsername(userDetails.getUsername());
-        return ResponseEntity.ok(this.alDocRepository.findByOwner(user));
+        List<AlDoc> alDocsList = this.alDocRepository.findByOwner(user);
+        return ResponseEntity.ok(alDocsList);
     }
 
     @PostMapping("/aldocs")

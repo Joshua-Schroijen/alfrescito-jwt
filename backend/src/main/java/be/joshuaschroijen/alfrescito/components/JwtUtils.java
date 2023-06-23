@@ -1,7 +1,5 @@
 package be.joshuaschroijen.alfrescito.components;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,17 +11,18 @@ import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 @Component
 public class JwtUtils {
-
   private SecretKey jwtSigningKey;
 
-  public JwtUtils() {
-    try {
-      KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
-      keyGenerator.init(SecureRandom.getInstanceStrong());
-      jwtSigningKey = keyGenerator.generateKey();
-    } catch (Exception e) {}
+  public JwtUtils() throws Exception {
+    KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
+    keyGenerator.init(SecureRandom.getInstanceStrong());
+    jwtSigningKey = keyGenerator.generateKey();
   }
 
   public String extractUsername(String token) {
@@ -82,7 +81,7 @@ public class JwtUtils {
       .setExpiration(
         new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24))
       )
-      .signWith(jwtSigningKey)
+      .signWith(jwtSigningKey, SignatureAlgorithm.HS256)
       .compact();
   }
 

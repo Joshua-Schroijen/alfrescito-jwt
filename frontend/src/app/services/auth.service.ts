@@ -55,9 +55,8 @@ export class AuthService {
 
   public addAuthorizationHeaders(headers: HttpHeaders): HttpHeaders {
     if (! this.authenticated) {
-      throw new Error("foo");
+      throw new Error("No JWT token to add to backend request");
     }
-    headers.set('Authorization', `Bearer ${this.jwtToken}`);
-    return headers;
+    return headers.set('Authorization', `Bearer ${this.jwtToken}`);
   }
 }

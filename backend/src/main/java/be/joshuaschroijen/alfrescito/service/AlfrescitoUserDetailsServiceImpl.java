@@ -37,9 +37,11 @@ public class AlfrescitoUserDetailsServiceImpl implements AlfrescitoUserDetailsSe
         AlfrescitoUser user = userRepository.findOneByEmail(email);
 
         if (user != null) {
-            return new User(user.getEmail(),
-                    user.getPassword(),
-                    mapRolesToAuthorities(user.getRoles()));
+            return new User(
+                user.getEmail(),
+                user.getPassword(),
+                mapRolesToAuthorities(user.getRoles())
+            );
         } else {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
