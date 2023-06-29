@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 
@@ -11,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterFormComponent {
   @ViewChild('registrationForm', { read: NgForm }) form!: NgForm;
 
-  public constructor(private authService: AuthService) {
+  public constructor(private router: Router, private authService: AuthService) {
   }
 
   protected onSubmit(inputs: {[key: string]: string}): void {
@@ -20,7 +21,12 @@ export class RegisterFormComponent {
     }
 
     if (this.form.valid) {
-      this.authService.register(inputs['email'], inputs['password']);
+      this.authService.register(inputs['email'], inputs['password'])
+        .subscribe({
+          complete: () => {
+            this.router.navigate(['/login']);
+          }
+        });
     }
   }
 }

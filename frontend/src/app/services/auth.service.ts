@@ -21,6 +21,7 @@ export class AuthService {
     };
 
     let loginProcess: Observable<AuthenticationResponse> = this.http.post<AuthenticationResponse>(`${environment.apiUrl}/auth/authenticate`, credentials);
+    let finalResult: Observable<string> = loginProcess.pipe(ignoreElements());
     loginProcess.subscribe({
       next: (response: AuthenticationResponse) => {
         this.jwtToken = response.jwtToken;
@@ -29,7 +30,7 @@ export class AuthService {
         console.error('Authentication failed:', error);
       }
     });
-    return loginProcess.pipe(ignoreElements());
+    return finalResult;
   }
 
   public register(email: string, password: string): Observable<string> {
@@ -41,12 +42,13 @@ export class AuthService {
     const headers = new HttpHeaders();
   
     let registrationProcess: Observable<string> = this.http.post<string>(`${environment.apiUrl}/auth/register`, userData, { headers });
+    let finalResult: Observable<string> = registrationProcess.pipe(ignoreElements());
     registrationProcess.subscribe({
       error: (error) => {
         console.error('Authentication failed:', error);
       }
     });
-    return registrationProcess.pipe(ignoreElements());
+    return finalResult;
   }
 
   public get authenticated(): boolean {
